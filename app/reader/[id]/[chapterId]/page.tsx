@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion, useScroll, useSpring } from 'motion/react';
-import { ChevronLeft, ChevronRight, Settings, Maximize2, Zap, ArrowLeft, AlignJustify } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Settings, Zap, ArrowLeft, AlignJustify } from 'lucide-react';
 import { Manga, Chapter } from '@/lib/types';
 import { getImageUrl } from '@/lib/utils';
 
@@ -51,7 +51,7 @@ export default function Reader() {
           setChapter(currentChapter);
         }
       } catch (err) {
-        console.error('Failed to fetch chapter data:', err);
+        console.error('获取章节数据失败:', err);
       } finally {
         setLoading(false);
       }
@@ -71,7 +71,7 @@ export default function Reader() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [chapter, readingMode]);
 
-  // Auto-hide controls after 3s of no mouse movement
+  // 3秒无操作自动隐藏控制栏
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
     const show = () => {
@@ -92,7 +92,7 @@ export default function Reader() {
     return (
       <div className="pt-40 text-center flex flex-col items-center gap-6">
         <Zap className="w-12 h-12 text-kinetic-orange animate-pulse" />
-        <h1 className="font-display text-4xl tracking-tighter uppercase italic">LOADING CHAPTER...</h1>
+        <h1 className="font-display text-4xl tracking-tighter uppercase italic">章节加载中...</h1>
       </div>
     );
   }
@@ -100,9 +100,9 @@ export default function Reader() {
   if (!manga || !chapter) {
     return (
       <div className="pt-40 text-center flex flex-col items-center gap-6">
-        <h1 className="font-display text-7xl tracking-tighter uppercase italic">CHAPTER NOT FOUND</h1>
+        <h1 className="font-display text-7xl tracking-tighter uppercase italic">章节不存在</h1>
         <Link href="/" className="text-kinetic-orange font-bold tracking-widest uppercase hover:underline">
-          RETURN HOME
+          返回首页
         </Link>
       </div>
     );
@@ -114,13 +114,13 @@ export default function Reader() {
 
   return (
     <div className="bg-obsidian min-h-screen">
-      {/* Progress Bar */}
+      {/* 阅读进度条 */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-kinetic-orange z-[60] origin-left"
         style={{ scaleX }}
       />
 
-      {/* Top Bar */}
+      {/* 顶部控制栏 */}
       <motion.div
         initial={{ y: -100 }}
         animate={{ y: showControls ? 0 : -100 }}
@@ -139,7 +139,7 @@ export default function Reader() {
               {manga.title}
             </h2>
             <span className="text-[10px] font-bold tracking-widest text-white/40 uppercase">
-              CHAPTER {chapter.number}: {chapter.title}
+              第 {chapter.number} 话：{chapter.title}
             </span>
           </div>
         </div>
@@ -150,16 +150,18 @@ export default function Reader() {
               disabled={!prevChapter}
               onClick={() => router.push(`/reader/${manga.id}/${prevChapter?.id}`)}
               className="p-2 text-white/40 hover:text-white disabled:opacity-20 transition-colors"
+              title="上一话"
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
             <div className="px-4 py-2 bg-white/5 border border-white/10 font-display text-xl tracking-tight">
-              PAGE {currentPage} / {pages.length || '?'}
+              第 {currentPage} / {pages.length || '?'} 页
             </div>
             <button
               disabled={!nextChapter}
               onClick={() => router.push(`/reader/${manga.id}/${nextChapter?.id}`)}
               className="p-2 text-white/40 hover:text-white disabled:opacity-20 transition-colors"
+              title="下一话"
             >
               <ChevronRight className="w-6 h-6" />
             </button>
@@ -169,22 +171,22 @@ export default function Reader() {
             <button
               onClick={() => setShowSettings((v) => !v)}
               className="p-2 text-white/40 hover:text-white transition-colors"
-              aria-label="Settings"
+              aria-label="阅读设置"
             >
               <Settings className="w-5 h-5" />
             </button>
             <button
               onClick={() => setReadingMode((m) => (m === 'scroll' ? 'page' : 'scroll'))}
               className="p-2 text-white/40 hover:text-white transition-colors"
-              title={readingMode === 'scroll' ? 'Switch to page mode' : 'Switch to scroll mode'}
+              title={readingMode === 'scroll' ? '切换为翻页模式' : '切换为滚动模式'}
             >
               <AlignJustify className="w-5 h-5" />
             </button>
 
-            {/* Settings panel */}
+            {/* 设置面板 */}
             {showSettings && (
               <div className="absolute right-0 top-full mt-2 bg-kinetic-gray border border-white/10 p-6 min-w-[200px] z-10">
-                <p className="text-[10px] font-bold tracking-widest text-white/40 uppercase mb-4">READING MODE</p>
+                <p className="text-[10px] font-bold tracking-widest text-white/40 uppercase mb-4">阅读模式</p>
                 {(['scroll', 'page'] as ReadingMode[]).map((mode) => (
                   <button
                     key={mode}
@@ -193,7 +195,7 @@ export default function Reader() {
                       readingMode === mode ? 'text-kinetic-orange' : 'text-white/60 hover:text-white'
                     }`}
                   >
-                    {mode === 'scroll' ? 'SCROLL' : 'PAGE BY PAGE'}
+                    {mode === 'scroll' ? '连续滚动' : '逐页翻阅'}
                   </button>
                 ))}
               </div>
@@ -202,12 +204,12 @@ export default function Reader() {
         </div>
       </motion.div>
 
-      {/* Content */}
+      {/* 漫画页面内容 */}
       <div className="max-w-4xl mx-auto pt-24 pb-40 flex flex-col items-center">
         {pages.length === 0 ? (
           <div className="py-40 text-center">
             <p className="font-display text-3xl tracking-tighter uppercase italic text-white/20">
-              NO PAGES AVAILABLE FOR THIS CHAPTER
+              本章暂无页面内容
             </p>
           </div>
         ) : (
@@ -215,7 +217,7 @@ export default function Reader() {
             <div key={idx} className="w-full relative">
               <img
                 src={getImageUrl(page)}
-                alt={`Page ${idx + 1}`}
+                alt={`第 ${idx + 1} 页`}
                 className="w-full h-auto"
                 referrerPolicy="no-referrer"
                 loading={idx === 0 ? 'eager' : 'lazy'}
@@ -225,11 +227,11 @@ export default function Reader() {
         )}
       </div>
 
-      {/* Bottom Navigation */}
+      {/* 底部章节导航 */}
       <div className="max-w-4xl mx-auto px-6 pb-40">
         <div className="flex flex-col items-center gap-12 pt-20 border-t border-white/5">
           <h3 className="font-display text-4xl tracking-tighter uppercase italic text-white/20">
-            YOU'VE REACHED THE END OF THE CHAPTER
+            本话已阅读完毕
           </h3>
 
           <div className="flex gap-6 flex-wrap justify-center">
@@ -239,7 +241,7 @@ export default function Reader() {
                 className="group flex items-center gap-4 px-10 py-5 bg-white/5 border border-white/10 text-white font-display text-2xl tracking-tight uppercase italic hover:border-kinetic-orange transition-colors"
               >
                 <ChevronLeft className="w-6 h-6 group-hover:-translate-x-2 transition-transform" />
-                PREVIOUS
+                上一话
               </button>
             )}
             {nextChapter ? (
@@ -247,7 +249,7 @@ export default function Reader() {
                 onClick={() => router.push(`/reader/${manga.id}/${nextChapter.id}`)}
                 className="group flex items-center gap-4 px-10 py-5 bg-kinetic-orange text-obsidian font-display text-2xl tracking-tight uppercase italic hover:bg-white transition-colors"
               >
-                NEXT CHAPTER
+                下一话
                 <ChevronRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
               </button>
             ) : (
@@ -255,7 +257,7 @@ export default function Reader() {
                 href={`/manga/${manga.id}`}
                 className="group flex items-center gap-4 px-10 py-5 bg-kinetic-orange text-obsidian font-display text-2xl tracking-tight uppercase italic hover:bg-white transition-colors"
               >
-                BACK TO DETAILS
+                返回作品详情
                 <ArrowLeft className="w-6 h-6 group-hover:-translate-x-2 transition-transform" />
               </Link>
             )}

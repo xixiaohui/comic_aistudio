@@ -7,8 +7,8 @@ import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
 const navLinks = [
-  { href: '/', label: 'HOME' },
-  { href: '/browse', label: 'BROWSE' },
+  { href: '/', label: '首页' },
+  { href: '/browse', label: '浏览漫画' },
 ];
 
 export function Navbar() {
@@ -22,18 +22,18 @@ export function Navbar() {
         <Link href="/" className="flex items-center gap-2 group">
           <Zap className="w-6 h-6 text-kinetic-orange group-hover:scale-110 transition-transform" />
           <span className="font-display text-2xl tracking-tighter uppercase italic">
-            Manga<span className="text-kinetic-orange">Kinetic</span>
+            漫画<span className="text-kinetic-orange">动力</span>
           </span>
         </Link>
 
-        {/* Desktop Nav */}
+        {/* 桌面导航 */}
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               className={cn(
-                'text-xs font-bold tracking-widest uppercase transition-colors duration-200',
+                'text-xs font-bold tracking-widest transition-colors duration-200',
                 pathname === link.href
                   ? 'text-kinetic-orange'
                   : 'text-white/50 hover:text-white'
@@ -44,28 +44,28 @@ export function Navbar() {
           ))}
         </nav>
 
-        {/* Right Actions */}
+        {/* 右侧操作区 */}
         <div className="flex items-center gap-4">
           <Link
             href="/browse"
             className="hidden md:flex p-2 text-white/40 hover:text-kinetic-orange transition-colors"
-            aria-label="Search"
+            aria-label="搜索"
           >
             <Search className="w-5 h-5" />
           </Link>
 
-          {/* Mobile menu toggle */}
+          {/* 移动端菜单按钮 */}
           <button
             className="md:hidden p-2 text-white/60 hover:text-white transition-colors"
             onClick={() => setMenuOpen((v) => !v)}
-            aria-label="Toggle menu"
+            aria-label="切换菜单"
           >
             {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* 移动端菜单 */}
       {menuOpen && (
         <div className="md:hidden border-t border-white/5 bg-obsidian/95 backdrop-blur-md px-6 py-6 flex flex-col gap-6">
           {navLinks.map((link) => (

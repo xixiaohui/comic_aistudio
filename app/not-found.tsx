@@ -10,16 +10,16 @@ export default function NotFound() {
       </h1>
       <div className="-mt-16 flex flex-col items-center gap-6">
         <h2 className="font-display text-6xl tracking-tighter uppercase italic">
-          PAGE NOT FOUND
+          页面不存在
         </h2>
         <p className="text-white/40 text-lg max-w-md">
-          The page you are looking for does not exist or has been moved.
+          您访问的页面不存在或已被移除，请返回首页继续浏览。
         </p>
         <Link
           href="/"
           className="group inline-flex items-center gap-4 px-10 py-5 bg-kinetic-orange text-obsidian font-display text-2xl tracking-tight uppercase italic hover:bg-white transition-colors duration-300 mt-4"
         >
-          RETURN HOME
+          返回首页
         </Link>
       </div>
     </div>

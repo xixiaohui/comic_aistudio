@@ -13,7 +13,7 @@ type ViewMode = 'grid' | 'list';
 export default function Browse() {
   const [mangaData, setMangaData] = useState<Manga[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedGenre, setSelectedGenre] = useState('ALL');
+  const [selectedGenre, setSelectedGenre] = useState('全部');
   const [sortBy, setSortBy] = useState<SortOption>('newest');
   const [showSortMenu, setShowSortMenu] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
@@ -26,7 +26,7 @@ export default function Browse() {
         const data = await response.json();
         setMangaData(Array.isArray(data) ? data : []);
       } catch (err) {
-        console.error('Failed to fetch manga:', err);
+        console.error('获取漫画列表失败:', err);
       } finally {
         setLoading(false);
       }
@@ -34,17 +34,17 @@ export default function Browse() {
     fetchManga();
   }, []);
 
-  // Derive all genres dynamically from data
+  // 从数据中动态生成分类标签
   const genres = useMemo(() => {
-    const all = new Set<string>(['ALL']);
-    mangaData.forEach((m) => m.genres.forEach((g) => all.add(g.toUpperCase())));
+    const all = new Set<string>(['全部']);
+    mangaData.forEach((m) => m.genres.forEach((g) => all.add(g)));
     return Array.from(all);
   }, [mangaData]);
 
   const sortLabels: Record<SortOption, string> = {
-    newest: 'NEWEST',
-    rating: 'TOP RATED',
-    trending: 'TRENDING',
+    newest: '最新上线',
+    rating: '评分最高',
+    trending: '最热连载',
   };
 
   const filteredAndSorted = useMemo(() => {
@@ -53,7 +53,7 @@ export default function Browse() {
         m.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         m.author.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesGenre =
-        selectedGenre === 'ALL' || m.genres.some((g) => g.toUpperCase() === selectedGenre);
+        selectedGenre === '全部' || m.genres.some((g) => g === selectedGenre);
       return matchesSearch && matchesGenre;
     });
 
@@ -62,7 +62,6 @@ export default function Browse() {
     } else if (sortBy === 'trending') {
       result = [...result].sort((a, b) => (b.trending ? 1 : 0) - (a.trending ? 1 : 0));
     }
-    // 'newest' keeps API order (already sorted by created_at DESC)
 
     return result;
   }, [mangaData, searchQuery, selectedGenre, sortBy]);
@@ -82,20 +81,20 @@ export default function Browse() {
 
   return (
     <div className="pt-32 pb-20">
-      {/* Header */}
+      {/* 页面标题 */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 border-b border-white/5 pb-12">
         <div className="max-w-2xl">
           <h1 className="font-display text-8xl md:text-9xl tracking-tighter uppercase italic leading-none mb-6">
-            BROWSE THE ARCHIVE
+            漫画书库
           </h1>
           <p className="text-white/40 text-lg leading-relaxed">
-            Explore our curated collection of high-end manga, from cyberpunk thrillers to epic fantasies.
+            探索精心策划的漫画合集，从赛博朋克惊悚到史诗奇幻，应有尽有。
           </p>
         </div>
 
         <div className="flex flex-col items-end gap-4">
           <span className="text-[10px] font-bold tracking-widest text-white/20 uppercase">
-            {filteredAndSorted.length} TITLES FOUND
+            共找到 {filteredAndSorted.length} 部作品
           </span>
           <div className="flex items-center gap-4">
             <button
@@ -105,7 +104,7 @@ export default function Browse() {
                   ? 'bg-kinetic-orange border-kinetic-orange text-obsidian'
                   : 'bg-white/5 border-white/10 hover:border-kinetic-orange'
               }`}
-              aria-label="Grid view"
+              aria-label="网格视图"
             >
               <Grid className="w-5 h-5" />
             </button>
@@ -116,7 +115,7 @@ export default function Browse() {
                   ? 'bg-kinetic-orange border-kinetic-orange text-obsidian'
                   : 'bg-white/5 border-white/10 hover:border-kinetic-orange'
               }`}
-              aria-label="List view"
+              aria-label="列表视图"
             >
               <List className="w-5 h-5" />
             </button>
@@ -124,13 +123,13 @@ export default function Browse() {
         </div>
       </div>
 
-      {/* Filters & Search */}
+      {/* 筛选与搜索 */}
       <div className="flex flex-col lg:flex-row gap-8 mb-16">
         <div className="flex-1 relative group">
           <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 text-white/20 group-focus-within:text-kinetic-orange transition-colors" />
           <input
             type="text"
-            placeholder="SEARCH TITLES OR AUTHORS..."
+            placeholder="搜索漫画名称或作者..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full bg-white/5 border border-white/10 px-16 py-6 font-display text-2xl tracking-tight uppercase italic focus:outline-none focus:border-kinetic-orange transition-colors"
@@ -161,14 +160,14 @@ export default function Browse() {
           ))}
         </div>
 
-        {/* Sort Dropdown */}
+        {/* 排序下拉 */}
         <div className="relative">
           <button
             onClick={() => setShowSortMenu((v) => !v)}
             className="flex items-center gap-4 px-8 py-4 bg-white/5 border border-white/10 font-display text-xl tracking-tight uppercase italic hover:border-kinetic-orange transition-colors whitespace-nowrap"
           >
             <Filter className="w-5 h-5" />
-            SORT: {sortLabels[sortBy]}
+            排序：{sortLabels[sortBy]}
             <ChevronDown className={`w-5 h-5 transition-transform ${showSortMenu ? 'rotate-180' : ''}`} />
           </button>
           {showSortMenu && (
@@ -189,7 +188,7 @@ export default function Browse() {
         </div>
       </div>
 
-      {/* Results Grid */}
+      {/* 结果展示 */}
       {viewMode === 'grid' ? (
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-x-8 gap-y-16">
           {filteredAndSorted.map((manga, idx) => (
@@ -222,13 +221,13 @@ export default function Browse() {
         <div className="py-40 text-center flex flex-col items-center gap-6">
           <Zap className="w-12 h-12 text-white/10" />
           <h2 className="font-display text-4xl tracking-tighter uppercase italic text-white/20">
-            NO TITLES MATCH YOUR SEARCH
+            未找到符合条件的作品
           </h2>
           <button
-            onClick={() => { setSearchQuery(''); setSelectedGenre('ALL'); }}
+            onClick={() => { setSearchQuery(''); setSelectedGenre('全部'); }}
             className="text-kinetic-orange font-bold tracking-widest uppercase hover:underline"
           >
-            RESET FILTERS
+            重置筛选条件
           </button>
         </div>
       )}

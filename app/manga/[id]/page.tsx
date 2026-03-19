@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'motion/react';
-import { Star, Clock, BookOpen, Share2, Heart, ArrowRight, Zap, ChevronRight } from 'lucide-react';
+import { Star, BookOpen, Share2, Heart, ArrowRight, Zap, ChevronRight } from 'lucide-react';
 import { MangaCard } from '@/components/MangaCard';
 import { MangaCardSkeleton } from '@/components/MangaCardSkeleton';
 import { Manga } from '@/lib/types';
@@ -27,7 +27,7 @@ export default function Detail() {
           fetch('/api/manga'),
         ]);
 
-        if (!mangaRes.ok) throw new Error('Manga not found');
+        if (!mangaRes.ok) throw new Error('作品不存在');
         const mangaData = await mangaRes.json();
         const allData = await allRes.json();
 
@@ -38,7 +38,7 @@ export default function Detail() {
             : []
         );
       } catch (err) {
-        console.error('Failed to fetch manga detail:', err);
+        console.error('获取漫画详情失败:', err);
       } finally {
         setLoading(false);
       }
@@ -52,7 +52,7 @@ export default function Detail() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // fallback
+      // 降级处理
     }
   };
 
@@ -82,17 +82,19 @@ export default function Detail() {
   if (!manga) {
     return (
       <div className="pt-40 text-center flex flex-col items-center gap-6">
-        <h1 className="font-display text-7xl tracking-tighter uppercase italic">MANGA NOT FOUND</h1>
+        <h1 className="font-display text-7xl tracking-tighter uppercase italic">作品不存在</h1>
         <Link href="/" className="text-kinetic-orange font-bold tracking-widest uppercase hover:underline">
-          RETURN HOME
+          返回首页
         </Link>
       </div>
     );
   }
 
+  const statusLabel = manga.status === 'Ongoing' ? '连载中' : '已完结';
+
   return (
     <div className="pb-20">
-      {/* Banner */}
+      {/* 横幅封面 */}
       <div className="relative h-[60vh] w-full overflow-hidden">
         <div className="absolute inset-0">
           <img
@@ -133,7 +135,7 @@ export default function Detail() {
                     </span>
                   ))}
                   <span className="px-3 py-1 bg-kinetic-orange text-obsidian text-[10px] font-bold tracking-widest uppercase">
-                    {manga.status}
+                    {statusLabel}
                   </span>
                 </div>
 
@@ -151,7 +153,7 @@ export default function Detail() {
                   <div className="flex items-center gap-3">
                     <BookOpen className="w-6 h-6 text-white/40" />
                     <span className="font-display text-3xl tracking-tight uppercase italic text-white/40">
-                      {manga.chapters?.length || 0} CHAPTERS
+                      共 {manga.chapters?.length || 0} 话
                     </span>
                   </div>
                 </div>
@@ -161,13 +163,13 @@ export default function Detail() {
         </div>
       </div>
 
-      {/* Content Grid */}
+      {/* 内容区域 */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-20 mt-20">
-        {/* Main Content */}
+        {/* 主内容 */}
         <div className="lg:col-span-2">
           <section className="mb-20">
             <h2 className="font-display text-4xl tracking-tighter uppercase italic mb-8 border-b border-white/5 pb-4">
-              SYNOPSIS
+              作品简介
             </h2>
             <p className="text-white/60 text-xl leading-relaxed font-light italic">{manga.description}</p>
           </section>
@@ -175,7 +177,7 @@ export default function Detail() {
           {manga.chapters && manga.chapters.length > 0 && (
             <section>
               <div className="flex items-center justify-between mb-12 border-b border-white/5 pb-4">
-                <h2 className="font-display text-4xl tracking-tighter uppercase italic">CHAPTERS</h2>
+                <h2 className="font-display text-4xl tracking-tighter uppercase italic">章节列表</h2>
               </div>
 
               <div className="space-y-4">
@@ -200,7 +202,7 @@ export default function Detail() {
                     </div>
                     <div className="flex items-center gap-4">
                       <span className="text-[10px] font-bold tracking-widest text-white/20 uppercase group-hover:text-white/60 transition-colors">
-                        READ NOW
+                        立即阅读
                       </span>
                       <ChevronRight className="w-5 h-5 text-white/10 group-hover:text-kinetic-orange transition-colors" />
                     </div>
@@ -211,11 +213,11 @@ export default function Detail() {
           )}
         </div>
 
-        {/* Sidebar */}
+        {/* 侧边栏 */}
         <div className="space-y-20">
           <section>
             <h2 className="font-display text-2xl tracking-tighter uppercase italic mb-8 border-b border-white/5 pb-4">
-              ACTIONS
+              操作
             </h2>
             <div className="grid grid-cols-2 gap-4">
               <button
@@ -227,14 +229,14 @@ export default function Detail() {
                 }`}
               >
                 <Heart className={`w-5 h-5 ${favorited ? 'fill-kinetic-orange text-kinetic-orange' : ''}`} />
-                {favorited ? 'SAVED' : 'FAVORITE'}
+                {favorited ? '已收藏' : '收藏'}
               </button>
               <button
                 onClick={handleShare}
                 className="flex items-center justify-center gap-3 py-4 bg-white/5 border border-white/10 font-display text-xl tracking-tight uppercase italic hover:border-kinetic-orange transition-colors"
               >
                 <Share2 className="w-5 h-5" />
-                {copied ? 'COPIED!' : 'SHARE'}
+                {copied ? '已复制！' : '分享'}
               </button>
             </div>
           </section>
@@ -242,7 +244,7 @@ export default function Detail() {
           {recommendations.length > 0 && (
             <section>
               <h2 className="font-display text-2xl tracking-tighter uppercase italic mb-8 border-b border-white/5 pb-4">
-                YOU MAY ALSO LIKE
+                猜你喜欢
               </h2>
               <div className="space-y-8">
                 {recommendations.map((rec) => (
@@ -254,18 +256,18 @@ export default function Detail() {
 
           <section className="p-8 bg-kinetic-orange/5 border border-kinetic-orange/10">
             <h2 className="font-display text-2xl tracking-tighter uppercase italic mb-4 text-kinetic-orange">
-              START READING
+              开始阅读
             </h2>
             {manga.chapters && manga.chapters.length > 0 ? (
               <Link
                 href={`/reader/${manga.id}/${manga.chapters[0].id}`}
                 className="group inline-flex items-center gap-4 w-full px-6 py-4 bg-kinetic-orange text-obsidian font-display text-xl tracking-tight uppercase italic hover:bg-white transition-colors"
               >
-                CHAPTER 1
+                第一话
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             ) : (
-              <p className="text-white/40 text-sm">No chapters available yet.</p>
+              <p className="text-white/40 text-sm">暂无章节，敬请期待。</p>
             )}
           </section>
         </div>

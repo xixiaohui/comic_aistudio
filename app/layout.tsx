@@ -6,8 +6,8 @@ import { Navbar } from "@/components/Navbar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "MangaKinetic",
-  description: "A high-end, kinetic editorial manga reading platform",
+  title: "漫画动力 MangaKinetic",
+  description: "高端动感漫画阅读平台，探索海量精品漫画作品",
 };
 
 export default function RootLayout({
@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="zh-CN">
       <body className={`${inter.className} bg-obsidian text-white selection:bg-kinetic-orange selection:text-obsidian`}>
         <Navbar />
         <main className="container mx-auto px-6">

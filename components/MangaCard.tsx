@@ -46,22 +46,22 @@ export function MangaCard({ manga, variant = 'default' }: MangaCardProps) {
           referrerPolicy="no-referrer"
         />
 
-        {/* Hover overlay */}
+        {/* 悬停遮罩 */}
         <div className="absolute inset-0 bg-obsidian/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
           <span className="font-display text-sm tracking-widest uppercase italic border border-white px-4 py-2 text-white">
-            READ NOW
+            立即阅读
           </span>
         </div>
 
-        {/* Status badge */}
+        {/* 状态标签 */}
         {manga.trending && (
           <div className="absolute top-2 left-2 px-2 py-1 bg-kinetic-orange text-obsidian text-[9px] font-bold tracking-widest uppercase">
-            TRENDING
+            热门
           </div>
         )}
         {manga.fresh && !manga.trending && (
           <div className="absolute top-2 left-2 px-2 py-1 bg-white text-obsidian text-[9px] font-bold tracking-widest uppercase">
-            NEW
+            最新
           </div>
         )}
       </div>
