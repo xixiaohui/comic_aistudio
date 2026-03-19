@@ -1,7 +1,5 @@
 -- Database Creation Script for comic_db
--- Host: 208.167.233.53
--- Port: 5432
--- User: comic
+-- Configure connection details in your .env.local file (see .env.example)
 
 CREATE TABLE IF NOT EXISTS manga (
     id VARCHAR(255) PRIMARY KEY,
