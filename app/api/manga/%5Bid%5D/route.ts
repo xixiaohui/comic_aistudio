@@ -1,11 +1,11 @@
-import { NextResponse } from 'next/server';
+import { NextRequest,NextResponse } from 'next/server';
 import pool from '@/lib/db';
 
 export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context : { params: Promise<{}> }
 ) {
-  const { id } = params;
+  const { id } = await context.params as { id: string };
   try {
     const mangaResult = await pool.query('SELECT * FROM manga WHERE id = $1', [id]);
     if (mangaResult.rows.length === 0) {

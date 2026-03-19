@@ -1,0 +1,19 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/api/chapters/%5BchapterId%5D/pages/route": "/api/chapters/%5BchapterId%5D/pages",
+  "/api/chapters/[chapterId]/pages/route": "/api/chapters/[chapterId]/pages",
+  "/api/manga/%5Bid%5D/route": "/api/manga/%5Bid%5D",
+  "/api/manga/[id]/route": "/api/manga/[id]",
+  "/api/manga/route": "/api/manga",
+  "/api/openclaw/chapters/route": "/api/openclaw/chapters",
+  "/api/openclaw/manga/route": "/api/openclaw/manga",
+  "/api/openclaw/pages/route": "/api/openclaw/pages",
+  "/browse/page": "/browse",
+  "/images/[...path]/route": "/images/[...path]",
+  "/manga/%5Bid%5D/page": "/manga/%5Bid%5D",
+  "/manga/[id]/page": "/manga/[id]",
+  "/page": "/",
+  "/reader/%5Bid%5D/%5BchapterId%5D/page": "/reader/%5Bid%5D/%5BchapterId%5D",
+  "/reader/[id]/[chapterId]/page": "/reader/[id]/[chapterId]"
+}

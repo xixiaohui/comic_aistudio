@@ -1,0 +1,192 @@
+{
+  "version": 3,
+  "pages404": true,
+  "appType": "app",
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ],
+      "regex": "^(?:/(.*))(?:/)?$"
+    },
+    {
+      "source": "/images/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ],
+      "regex": "^/images(?:/(.*))(?:/)?$"
+    }
+  ],
+  "onMatchHeaders": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/api/chapters/[chapterId]/pages",
+      "regex": "^/api/chapters/([^/]+?)/pages(?:/)?$",
+      "routeKeys": {
+        "nxtPchapterId": "nxtPchapterId"
+      },
+      "namedRegex": "^/api/chapters/(?<nxtPchapterId>[^/]+?)/pages(?:/)?$"
+    },
+    {
+      "page": "/api/manga/[id]",
+      "regex": "^/api/manga/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/manga/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/images/[...path]",
+      "regex": "^/images/(.+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPpath": "nxtPpath"
+      },
+      "namedRegex": "^/images/(?<nxtPpath>.+?)(?:/)?$"
+    },
+    {
+      "page": "/manga/[id]",
+      "regex": "^/manga/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/manga/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/reader/[id]/[chapterId]",
+      "regex": "^/reader/([^/]+?)/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid",
+        "nxtPchapterId": "nxtPchapterId"
+      },
+      "namedRegex": "^/reader/(?<nxtPid>[^/]+?)/(?<nxtPchapterId>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/api/chapters/%5BchapterId%5D/pages",
+      "regex": "^/api/chapters/%5BchapterId%5D/pages(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/chapters/%5BchapterId%5D/pages(?:/)?$"
+    },
+    {
+      "page": "/api/manga",
+      "regex": "^/api/manga(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/manga(?:/)?$"
+    },
+    {
+      "page": "/api/manga/%5Bid%5D",
+      "regex": "^/api/manga/%5Bid%5D(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/manga/%5Bid%5D(?:/)?$"
+    },
+    {
+      "page": "/api/openclaw/chapters",
+      "regex": "^/api/openclaw/chapters(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/openclaw/chapters(?:/)?$"
+    },
+    {
+      "page": "/api/openclaw/manga",
+      "regex": "^/api/openclaw/manga(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/openclaw/manga(?:/)?$"
+    },
+    {
+      "page": "/api/openclaw/pages",
+      "regex": "^/api/openclaw/pages(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/openclaw/pages(?:/)?$"
+    },
+    {
+      "page": "/browse",
+      "regex": "^/browse(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/browse(?:/)?$"
+    },
+    {
+      "page": "/manga/%5Bid%5D",
+      "regex": "^/manga/%5Bid%5D(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/manga/%5Bid%5D(?:/)?$"
+    },
+    {
+      "page": "/reader/%5Bid%5D/%5BchapterId%5D",
+      "regex": "^/reader/%5Bid%5D/%5BchapterId%5D(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/reader/%5Bid%5D/%5BchapterId%5D(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

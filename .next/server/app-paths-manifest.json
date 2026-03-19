@@ -1,0 +1,19 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/chapters/%5BchapterId%5D/pages/route": "app/api/chapters/%5BchapterId%5D/pages/route.js",
+  "/api/chapters/[chapterId]/pages/route": "app/api/chapters/[chapterId]/pages/route.js",
+  "/api/manga/%5Bid%5D/route": "app/api/manga/%5Bid%5D/route.js",
+  "/api/manga/[id]/route": "app/api/manga/[id]/route.js",
+  "/api/manga/route": "app/api/manga/route.js",
+  "/api/openclaw/chapters/route": "app/api/openclaw/chapters/route.js",
+  "/api/openclaw/manga/route": "app/api/openclaw/manga/route.js",
+  "/api/openclaw/pages/route": "app/api/openclaw/pages/route.js",
+  "/browse/page": "app/browse/page.js",
+  "/images/[...path]/route": "app/images/[...path]/route.js",
+  "/manga/%5Bid%5D/page": "app/manga/%5Bid%5D/page.js",
+  "/manga/[id]/page": "app/manga/[id]/page.js",
+  "/page": "app/page.js",
+  "/reader/%5Bid%5D/%5BchapterId%5D/page": "app/reader/%5Bid%5D/%5BchapterId%5D/page.js",
+  "/reader/[id]/[chapterId]/page": "app/reader/[id]/[chapterId]/page.js"
+}
